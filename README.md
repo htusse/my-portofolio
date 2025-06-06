@@ -4,7 +4,7 @@ A stunning, responsive portfolio website showcasing the work and expertise of **
 
 ## ✨ Live Demo
 
-🌐 **[View Live Portfolio](https://your-domain.com)** 
+🌐 **[View Live Portfolio](https://my-portofolio-5u1j.onrender.com)** 
 
 ## 🎯 Portfolio Highlights
 
@@ -90,7 +90,7 @@ npm >= 8.0.0
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/my-portofolio.git
+git clone https://github.com/htusse/my-portofolio.git
 cd my-portofolio
 ```
 
