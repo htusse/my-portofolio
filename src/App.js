@@ -7,17 +7,24 @@ import { FaLinkedin, FaGithub, FaEnvelope, FaPhone } from 'react-icons/fa';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      
+      // Update header background based on scroll
+      setIsScrolled(scrollPosition > 50);
+      
+      // Update active section based on scroll position
       const sections = ['home', 'projects', 'skills'];
-      const scrollPosition = window.scrollY + 100;
+      const offset = 100;
 
       for (let section of sections) {
         const element = document.getElementById(section);
         if (element) {
           const { offsetTop, offsetHeight } = element;
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+          if (scrollPosition >= offsetTop - offset && scrollPosition < offsetTop + offsetHeight - offset) {
             setActiveSection(section);
             break;
           }
@@ -26,24 +33,28 @@ function App() {
     };
 
     window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Call once to set initial state
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      const headerHeight = 80;
+      const elementPosition = element.offsetTop - headerHeight;
+      
+      window.scrollTo({
+        top: elementPosition,
+        behavior: 'smooth'
+      });
     }
   };
 
   return (
     <div className="App">
-      <header className="main-header">
+      <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container">
           <div className="header-content">
-            <div className="logo">
-              <h1>Portfolio</h1>
-            </div>
             <nav className="navigation">
               <button 
                 className={`nav-btn ${activeSection === 'home' ? 'active' : ''}`}
@@ -66,16 +77,16 @@ function App() {
             </nav>
             <div className="contact-info">
               <div className="contact-links">
-                <a href="mailto:hervetusse@gmail.com" className="contact-link" title="Email">
+                <a href="mailto:hervetusse@gmail.com" className="contact-link" title="Email" aria-label="Send email">
                   <FaEnvelope />
                 </a>
-                <a href="tel:+27641704892" className="contact-link" title="Phone">
+                <a href="tel:+27641704892" className="contact-link" title="Phone" aria-label="Call phone">
                   <FaPhone />
                 </a>
-                <a href="https://www.linkedin.com/in/herve-tusse-8a2479177/" className="contact-link" title="LinkedIn" target="_blank" rel="noopener noreferrer">
+                <a href="https://www.linkedin.com/in/herve-tusse-8a2479177/" className="contact-link" title="LinkedIn" target="_blank" rel="noopener noreferrer" aria-label="Visit LinkedIn profile">
                   <FaLinkedin />
                 </a>
-                <a href="https://github.com/htusse" className="contact-link" title="GitHub" target="_blank" rel="noopener noreferrer">
+                <a href="https://github.com/htusse" className="contact-link" title="GitHub" target="_blank" rel="noopener noreferrer" aria-label="Visit GitHub profile">
                   <FaGithub />
                 </a>
               </div>
@@ -94,7 +105,7 @@ function App() {
 
       <footer className="main-footer">
         <div className="container">
-          <p>&copy; 2025 Portfolio. Crafted with passion.</p>
+          <p>&copy; 2025 Herve Tusse. Crafted with passion and precision.</p>
         </div>
       </footer>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FaGithub,
   FaExternalLinkAlt,
@@ -16,56 +16,12 @@ import "./Projects.css";
 const Projects = () => {
   const [currentProject, setCurrentProject] = useState(0);
   const [filter, setFilter] = useState("all");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [cardImageIndices, setCardImageIndices] = useState({});
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [modalImages, setModalImages] = useState([]);
+  const [currentModalImage, setCurrentModalImage] = useState(0);
 
   const projects = [
-    {
-      title: "Vaya X",
-      period: "January 2025 - Present",
-      category: "mobile",
-      type: "Rideshare Mobile Application",
-      status: "Completed",
-      description:
-        "Comprehensive rideshare application specifically designed for the South African market, featuring localized payment methods, multi-language support, and safety features tailored to local needs.",
-      benefits: [
-        "Localized payment integration including EFT, SnapScan, Zapper, and mobile banking",
-        "Multi-language support for English, Afrikaans, Zulu, and Xhosa",
-        "Enhanced safety features with trip sharing and emergency contacts",
-        "Offline mode for areas with limited connectivity and cash payment options",
-        "South African compliance with POPIA and local transportation regulations",
-        "Optimized for local traffic patterns and township area coverage",
-      ],
-      technologies: [
-        "React Native",
-        "Node.js",
-        "Firebase",
-        "Payment Gateways",
-        "Geolocation",
-        "Offline Storage",
-        "Multi-language",
-        "Push Notifications",
-      ],
-      images: [
-        "/20.png", // Cover image
-        "/21.png", // Additional images
-        "/22.png",
-        "/23.png",
-        "/24.png",
-        "/25.png",
-        "/26.png",
-        "/27.png",
-        "/28.png",
-        "/29.png",
-        "/30.png",
-        "/31.png",
-        "/19.png",
-      ],
-      featured: true,
-      links: {
-        website: "https://vayax-78d77.web.app/",
-      },
-    },
     {
       title: "Jaride - Multi-Service Platform",
       period: "January 2024 - March 2024",
@@ -383,6 +339,52 @@ const Projects = () => {
           "https://play.google.com/store/apps/details?id=com.ganizani.joj",
       },
     },
+    {
+      title: "Vaya X",
+      period: "January 2025 - Present",
+      category: "mobile",
+      type: "Rideshare Mobile Application",
+      status: "Completed",
+      description:
+        "Comprehensive rideshare application specifically designed for the South African market, featuring localized payment methods, multi-language support, and safety features tailored to local needs.",
+      benefits: [
+        "Localized payment integration including EFT, SnapScan, Zapper, and mobile banking",
+        "Multi-language support for English, Afrikaans, Zulu, and Xhosa",
+        "Enhanced safety features with trip sharing and emergency contacts",
+        "Offline mode for areas with limited connectivity and cash payment options",
+        "South African compliance with POPIA and local transportation regulations",
+        "Optimized for local traffic patterns and township area coverage",
+      ],
+      technologies: [
+        "React Native",
+        "Node.js",
+        "Firebase",
+        "Payment Gateways",
+        "Geolocation",
+        "Offline Storage",
+        "Multi-language",
+        "Push Notifications",
+      ],
+      images: [
+        "/20.png", // Cover image
+        "/21.png", // Additional images
+        "/22.png",
+        "/23.png",
+        "/24.png",
+        "/25.png",
+        "/26.png",
+        "/27.png",
+        "/28.png",
+        "/29.png",
+        "/30.png",
+        "/31.png",
+        "/19.png",
+      ],
+      featured: false,
+      links: {
+        website: "https://vayax-78d77.web.app/",
+      },
+    },
   ];
 
   const categories = [
@@ -399,6 +401,39 @@ const Projects = () => {
         );
 
   const featuredProjects = projects.filter((project) => project.featured);
+
+  // Keyboard navigation for modal
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (!isImageModalOpen) return;
+
+      switch (e.key) {
+        case 'Escape':
+          setIsImageModalOpen(false);
+          setModalImages([]);
+          setCurrentModalImage(0);
+          document.body.style.overflow = 'auto';
+          break;
+        case 'ArrowLeft':
+          setCurrentModalImage((prev) => 
+            prev === 0 ? modalImages.length - 1 : prev - 1
+          );
+          break;
+        case 'ArrowRight':
+          setCurrentModalImage((prev) => 
+            prev === modalImages.length - 1 ? 0 : prev + 1
+          );
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (isImageModalOpen) {
+      document.addEventListener('keydown', handleKeyPress);
+      return () => document.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [isImageModalOpen, modalImages.length]);
 
   // Helper functions for card image navigation
   const getCardImageIndex = (projectIndex) => {
@@ -423,6 +458,46 @@ const Projects = () => {
     }
 
     setCardImageIndex(projectIndex, newIndex);
+  };
+
+  // Navigation functions for featured projects carousel
+  const navigateToProject = (direction) => {
+    if (direction === "next") {
+      setCurrentProject((prev) => 
+        prev === featuredProjects.length - 1 ? 0 : prev + 1
+      );
+    } else {
+      setCurrentProject((prev) => 
+        prev === 0 ? featuredProjects.length - 1 : prev - 1
+      );
+    }
+  };
+
+  // Image modal functions
+  const openImageModal = (images) => {
+    setModalImages(images);
+    setCurrentModalImage(0);
+    setIsImageModalOpen(true);
+    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  };
+
+  const closeImageModal = () => {
+    setIsImageModalOpen(false);
+    setModalImages([]);
+    setCurrentModalImage(0);
+    document.body.style.overflow = 'auto'; // Restore scroll
+  };
+
+  const navigateModalImage = (direction) => {
+    if (direction === "next") {
+      setCurrentModalImage((prev) => 
+        prev === modalImages.length - 1 ? 0 : prev + 1
+      );
+    } else {
+      setCurrentModalImage((prev) => 
+        prev === 0 ? modalImages.length - 1 : prev - 1
+      );
+    }
   };
 
   const renderProjectLinks = (links) => {
@@ -491,19 +566,18 @@ const Projects = () => {
 
         {/* Featured Project Carousel */}
         <div className="featured-carousel">
+          {/* Carousel Navigation Arrows */}
+          <button 
+            className="carousel-nav-btn prev" 
+            onClick={() => navigateToProject("prev")}
+            aria-label="Previous project"
+          >
+            <FaChevronLeft />
+          </button>
+
           <div className="carousel-container">
             <div className="featured-project">
-              <div className="project-image">
-                <img
-                  src={
-                    featuredProjects[currentProject]?.images[currentImageIndex]
-                  }
-                  alt={featuredProjects[currentProject]?.title}
-                  onError={(e) => {
-                    e.target.src =
-                      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
-                  }}
-                />
+              <div className="project-images-collage">
                 <div className="project-overlay">
                   <div className="project-status">
                     <span
@@ -518,51 +592,48 @@ const Projects = () => {
                   </div>
                 </div>
 
-                {/* Image Gallery Navigation */}
-                {featuredProjects[currentProject]?.images.length > 1 && (
-                  <>
-                    <button
-                      className="image-nav-btn prev"
-                      onClick={() =>
-                        setCurrentImageIndex((prev) =>
-                          prev === 0
-                            ? featuredProjects[currentProject].images.length - 1
-                            : prev - 1
-                        )
-                      }
-                    >
-                      <FaChevronLeft />
-                    </button>
-                    <button
-                      className="image-nav-btn next"
-                      onClick={() =>
-                        setCurrentImageIndex((prev) =>
-                          prev ===
-                          featuredProjects[currentProject].images.length - 1
-                            ? 0
-                            : prev + 1
-                        )
-                      }
-                    >
-                      <FaChevronRight />
-                    </button>
-
-                    {/* Image Indicators */}
-                    <div className="image-indicators">
-                      {featuredProjects[currentProject].images.map(
-                        (_, index) => (
-                          <button
+                <div className={`images-grid ${
+                  featuredProjects[currentProject]?.images.length === 1 ? 'grid-single' :
+                  featuredProjects[currentProject]?.images.length === 2 ? 'grid-double' :
+                  featuredProjects[currentProject]?.images.length === 3 ? 'grid-triple' :
+                  featuredProjects[currentProject]?.images.length === 4 ? 'grid-quad' :
+                  featuredProjects[currentProject]?.images.length === 5 ? 'grid-five' :
+                  featuredProjects[currentProject]?.images.length === 6 ? 'grid-six' :
+                  'grid-multiple'
+                }`}>
+                  {featuredProjects[currentProject]?.images.slice(0, 6).map((image, index) => {
+                    const totalImages = featuredProjects[currentProject]?.images.length;
+                    const isLastItem = index === 5 && totalImages > 6;
+                    
+                    return (
+                                            <div 
                             key={index}
-                            className={`image-indicator ${
-                              currentImageIndex === index ? "active" : ""
-                            }`}
-                            onClick={() => setCurrentImageIndex(index)}
-                          />
-                        )
+                        className={`image-item item-${index + 1}`}
+                        onClick={() => {
+                          setCurrentModalImage(index);
+                          openImageModal(featuredProjects[currentProject]?.images);
+                        }}
+                      >
+                        <img
+                          src={image}
+                          alt={`${featuredProjects[currentProject]?.title} - Image ${index + 1}`}
+                          onError={(e) => {
+                            e.target.src =
+                              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ci8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
+                          }}
+                        />
+                                                {isLastItem && (
+                          <div 
+                            className="overlay-count"
+                            onClick={() => openImageModal(featuredProjects[currentProject]?.images)}
+                          >
+                            +{totalImages - 6}
+                          </div>
                       )}
                     </div>
-                  </>
-                )}
+                    );
+                  })}
+                </div>
               </div>
 
               <div className="project-content">
@@ -609,6 +680,14 @@ const Projects = () => {
             </div>
           </div>
 
+          <button 
+            className="carousel-nav-btn next" 
+            onClick={() => navigateToProject("next")}
+            aria-label="Next project"
+          >
+            <FaChevronRight />
+          </button>
+
           <div className="carousel-indicators">
             {featuredProjects.map((_, index) => (
               <button
@@ -616,10 +695,7 @@ const Projects = () => {
                 className={`indicator ${
                   currentProject === index ? "active" : ""
                 }`}
-                onClick={() => {
-                  setCurrentProject(index);
-                  setCurrentImageIndex(0); // Reset to first image when switching projects
-                }}
+                onClick={() => setCurrentProject(index)}
               />
             ))}
           </div>
@@ -648,7 +724,7 @@ const Projects = () => {
               <div key={index} className="project-card">
                 <div className="card-image">
                   <img
-                    // style={{objectFit: 'contain'}}
+                    style={{objectFit: 'cover'}}
                     src={project.images[currentCardImageIndex]}
                     alt={project.title}
                     onError={(e) => {
@@ -746,6 +822,71 @@ const Projects = () => {
             );
           })}
         </div>
+
+        {/* Image Modal */}
+        {isImageModalOpen && (
+          <div className="image-modal-overlay" onClick={closeImageModal}>
+            <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close-btn" onClick={closeImageModal}>
+                <span style={{lineHeight: '1', fontSize: '2rem', fontWeight: 'bold'}}>×</span>
+              </button>
+              
+              <div className="modal-image-container">
+                <img
+                  src={modalImages[currentModalImage]}
+                  alt={`${featuredProjects[currentProject]?.title} - Image ${currentModalImage + 1}`}
+                  onError={(e) => {
+                    e.target.src =
+                      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
+                  }}
+                />
+                
+                {modalImages.length > 1 && (
+                  <>
+                    <button
+                      className="modal-nav-btn prev"
+                      onClick={() => navigateModalImage("prev")}
+                    >
+                      <FaChevronLeft />
+                    </button>
+                    <button
+                      className="modal-nav-btn next"
+                      onClick={() => navigateModalImage("next")}
+                    >
+                      <FaChevronRight />
+                    </button>
+                  </>
+                )}
+              </div>
+
+              <div className="modal-image-info">
+                <h3>{featuredProjects[currentProject]?.title}</h3>
+                <p>{currentModalImage + 1} of {modalImages.length}</p>
+              </div>
+
+              {modalImages.length > 1 && (
+                <div className="modal-image-thumbnails">
+                  {modalImages.map((image, index) => (
+                    <div
+                      key={index}
+                      className={`modal-thumbnail ${currentModalImage === index ? 'active' : ''}`}
+                      onClick={() => setCurrentModalImage(index)}
+                    >
+                      <img
+                        src={image}
+                        alt={`Thumbnail ${index + 1}`}
+                        onError={(e) => {
+                          e.target.src =
+                            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

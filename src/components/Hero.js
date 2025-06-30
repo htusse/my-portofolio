@@ -126,10 +126,6 @@ const Hero = () => {
               <a href="#skills" className="btn btn-secondary glow-effect">
                 Explore Skills
               </a>
-              <a href="/Herve_Tusse_Resume.pdf" className="btn btn-outline download-btn" download>
-                <FaDownload />
-                Download CV
-              </a>
             </div>
 
             <div className="hero-social">
