@@ -105,7 +105,7 @@ function App() {
 
       <footer className="main-footer">
         <div className="container">
-          <p>&copy; 2025 Herve Tusse. Crafted with passion and precision.</p>
+          <p style={{color: '#fff'}}>&copy; 2025 Herve Tusse. Crafted with passion and precision.</p>
         </div>
       </footer>
     </div>

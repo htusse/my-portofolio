@@ -274,7 +274,7 @@ const Skills = () => {
   };
 
   const getSkillColor = (level) => {
-    if (level >= 90) return "#10B981"; // Green
+    if (level >= 90) return "#fff"; // Green
     if (level >= 80) return "#3B82F6"; // Blue
     if (level >= 70) return "#F59E0B"; // Yellow
     return "#EF4444"; // Red
@@ -421,25 +421,6 @@ const Skills = () => {
                       }}
                     />
                   </div>
-{/* 
-                  {hoveredSkill === skill.name && (
-                    <div className="skill-tooltip">
-                      <div className="tooltip-content">
-                        <div className="tooltip-item">
-                          <FaTrophy />
-                          <span>{skill.projects} Projects</span>
-                        </div>
-                        <div className="tooltip-item">
-                          <FaChartBar />
-                          <span>{skill.level}% Proficiency</span>
-                        </div>
-                        <div className="tooltip-item">
-                          <FaCode />
-                          <span>{skill.years}+ Years Experience</span>
-                        </div>
-                      </div>
-                    </div>
-                  )} */}
                 </div>
               ))}
             </div>
