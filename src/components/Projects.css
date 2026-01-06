@@ -1642,13 +1642,18 @@
     padding: 4rem 0;
   }
   
+  .section-header {
+    padding: 0 1rem;
+    margin-bottom: 3rem;
+  }
+  
   .section-title {
     font-size: clamp(2rem, 6vw, 2.5rem);
     text-align: center;
   }
   
   .section-subtitle {
-    font-size: 1.1rem;
+    font-size: 1rem;
     text-align: center;
     padding: 0 1rem;
   }
@@ -1657,6 +1662,7 @@
     flex-direction: column;
     gap: 1.5rem;
     align-items: stretch;
+    margin-bottom: 4rem;
   }
 
   .carousel-nav-btn {
@@ -1665,27 +1671,135 @@
 
   .carousel-container {
     width: 100%;
+    border-radius: 20px;
+    padding-bottom: 1rem; /* Add padding at bottom to prevent overlap */
   }
 
   .carousel-indicators {
     position: static;
     transform: none;
     margin-top: 1.5rem;
+    gap: 0.85rem;
+  }
+  
+  .indicator {
+    width: 14px;
+    height: 14px;
+    min-width: 44px; /* Better touch target */
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .indicator::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background: rgba(107, 151, 175, 0.3);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+  }
+  
+  .indicator.active::before {
+    background: var(--primary-color);
+    width: 16px;
+    height: 16px;
   }
 
   .featured-project {
     grid-template-columns: 1fr;
     min-height: auto;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem 2rem; /* Add bottom padding */
+  }
+  
+  .project-content {
+    padding: 1.5rem 1rem 2rem; /* Add bottom padding to prevent overlap */
+    order: 2; /* Show content after image on mobile */
   }
 
   .project-images-collage {
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    order: 1; /* Show image first on mobile */
+    min-height: 280px; /* Ensure minimum height for image display */
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
   }
 
   .images-grid {
     max-width: 100%;
-    max-height: 300px;
+    max-height: 280px;
+    min-height: 250px; /* Ensure grid has minimum height */
+    width: 100%;
+  }
+  
+  .image-item {
+    min-height: 250px; /* Ensure image items are visible */
+  }
+  
+  .image-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Changed from cover to contain for better mobile display */
+  }
+  
+  .project-title {
+    font-size: 1.5rem;
+    line-height: 1.3;
+    margin-bottom: 0.75rem;
+  }
+  
+  .project-type {
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-period {
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .project-description {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+  }
+  
+  .project-benefits h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .project-benefits li {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.75rem;
+  }
+  
+  .project-benefits li::before {
+    font-size: 1rem;
+  }
+  
+  .project-technologies {
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .tech-badge {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.75rem;
+  }
+  
+  .project-links {
+    gap: 0.75rem;
+    margin-top: 1.5rem; /* Add more space above links */
+    padding-bottom: 1rem; /* Add padding to prevent overlap with swipe indicator */
+  }
+  
+  .project-link {
+    padding: 0.85rem 1.25rem;
+    font-size: 0.9rem;
+    min-height: 48px;
   }
 
   /* Adjust grid layouts for mobile */
@@ -1947,7 +2061,7 @@
   
   .projects-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 2rem;
     padding: 0 1rem;
   }
   
@@ -1956,6 +2070,7 @@
     padding: 0 1rem;
     justify-content: center;
     flex-wrap: wrap;
+    margin-bottom: 2rem;
   }
   
   .filter-btn {
@@ -1967,7 +2082,8 @@
   
   .project-card {
     margin: 0 auto;
-    max-width: 400px;
+    max-width: 100%;
+    border-radius: 20px;
   }
   
   .card-content {
@@ -2009,30 +2125,85 @@
     padding: 3rem 0;
   }
   
+  .section-header {
+    padding: 0 0.75rem;
+    margin-bottom: 2.5rem;
+  }
+  
   .section-title {
     font-size: clamp(1.8rem, 8vw, 2.2rem);
   }
   
   .section-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     padding: 0 0.75rem;
   }
   
   .featured-project {
-    padding: 1.25rem;
-    margin: 0 0.75rem;
+    padding: 1rem;
+  }
+  
+  .project-content {
+    padding: 1.25rem 0.75rem;
   }
 
   .project-images-collage {
-    padding: 1rem;
+    padding: 1rem 0.5rem;
+    min-height: 220px; /* Ensure minimum height */
   }
 
   .images-grid {
-    max-height: 250px;
+    max-height: 220px;
+    min-height: 200px; /* Ensure visibility */
+  }
+  
+  .image-item {
+    min-height: 200px;
   }
   
   .project-title {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
+    line-height: 1.25;
+  }
+  
+  .project-type {
+    font-size: 0.8rem;
+  }
+  
+  .project-period {
+    font-size: 0.8rem;
+  }
+  
+  .project-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+  }
+  
+  .project-benefits h4 {
+    font-size: 0.95rem;
+  }
+  
+  .project-benefits li {
+    font-size: 0.85rem;
+    padding-left: 1.5rem;
+  }
+  
+  .tech-badge {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.7rem;
+  }
+  
+  .project-links {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .project-link {
+    width: 100%;
+    justify-content: center;
+    padding: 0.85rem 1rem;
+    font-size: 0.85rem;
   }
   
   .project-description {
@@ -2108,25 +2279,68 @@
     padding: 2.5rem 0;
   }
   
+  .section-header {
+    padding: 0 0.5rem;
+    margin-bottom: 2rem;
+  }
+  
   .featured-project {
-    padding: 1rem;
-    margin: 0 0.5rem;
+    padding: 0.75rem;
+  }
+  
+  .project-content {
+    padding: 1rem 0.5rem;
   }
 
   .project-images-collage {
-    padding: 0.75rem;
+    padding: 0.75rem 0.25rem;
+    min-height: 180px; /* Ensure minimum height */
   }
 
   .images-grid {
-    max-height: 200px;
+    max-height: 180px;
+    min-height: 160px; /* Ensure visibility */
+  }
+  
+  .image-item {
+    min-height: 160px;
   }
   
   .project-title {
-    font-size: 1.35rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+  }
+  
+  .project-type {
+    font-size: 0.75rem;
+  }
+  
+  .project-period {
+    font-size: 0.75rem;
   }
   
   .project-description {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  .project-benefits h4 {
     font-size: 0.9rem;
+  }
+  
+  .project-benefits li {
+    font-size: 0.8rem;
+    padding-left: 1.25rem;
+  }
+  
+  .tech-badge {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.65rem;
+  }
+  
+  .project-link {
+    padding: 0.75rem 0.875rem;
+    font-size: 0.8rem;
   }
   
   .projects-grid {
@@ -2214,24 +2428,27 @@
   .carousel-container::after {
     content: '← Swipe →';
     position: absolute;
-    bottom: 1rem;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.5);
     color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    opacity: 0.8;
+    padding: 0.5rem 1.25rem;
+    border-radius: 25px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0;
     z-index: 10;
     pointer-events: none;
-    animation: fadeInOut 3s ease-in-out;
+    animation: swipePulse 4s ease-in-out;
+    letter-spacing: 0.05em;
   }
 }
 
-@keyframes fadeInOut {
+@keyframes swipePulse {
   0%, 100% { opacity: 0; }
-  20%, 80% { opacity: 0.8; }
+  5%, 25% { opacity: 0.7; }
+  30% { opacity: 0; }
 }
 
 /* Animations */

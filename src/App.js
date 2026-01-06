@@ -3,11 +3,12 @@ import './App.css';
 import Hero from './components/Hero';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
-import { FaLinkedin, FaGithub, FaEnvelope, FaPhone } from 'react-icons/fa';
+import { FaLinkedin, FaGithub, FaEnvelope, FaPhone, FaBars, FaTimes } from 'react-icons/fa';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +49,7 @@ function App() {
         behavior: 'smooth'
       });
     }
+    setMobileMenuOpen(false); // Close menu after navigation
   };
 
   return (
@@ -55,7 +57,14 @@ function App() {
       <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container">
           <div className="header-content">
-            <nav className="navigation">
+            <button 
+              className="mobile-menu-toggle"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </button>
+            <nav className={`navigation ${mobileMenuOpen ? 'mobile-open' : ''}`}>
               <button 
                 className={`nav-btn ${activeSection === 'home' ? 'active' : ''}`}
                 onClick={() => scrollToSection('home')}
