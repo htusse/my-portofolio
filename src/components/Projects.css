@@ -34,24 +34,25 @@
 }
 
 .section-title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  font-weight: 900;
+  font-family: var(--font-heading);
+  font-size: var(--text-4xl);
+  font-weight: var(--font-extrabold);
   margin-bottom: 1.5rem;
   background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 60%, #3a5f7a 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
 }
 
 .section-subtitle {
-  font-size: 1.25rem;
+  font-size: var(--text-xl);
   color: var(--text-secondary);
   max-width: 700px;
   margin: 0 auto;
-  line-height: 1.6;
-  font-weight: 400;
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-normal);
 }
 
 /* Enhanced Featured Carousel */
@@ -2254,4 +2255,437 @@
 .project-card:nth-child(3) { animation-delay: 0.3s; }
 .project-card:nth-child(4) { animation-delay: 0.4s; }
 .project-card:nth-child(5) { animation-delay: 0.5s; }
-.project-card:nth-child(6) { animation-delay: 0.6s; } 
+.project-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Project Placeholder - for projects without images */
+.project-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+  z-index: 1;
+}
+
+.project-placeholder.show {
+  display: flex;
+}
+
+.placeholder-initials {
+  font-size: 4rem;
+  font-weight: 300;
+  color: #fafafa;
+  letter-spacing: 0.1em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  opacity: 0.9;
+}
+
+/* Modal placeholder */
+.project-placeholder.modal-placeholder {
+  position: relative;
+  min-height: 400px;
+  border-radius: 8px;
+}
+
+.project-placeholder.modal-placeholder .placeholder-initials {
+  font-size: 6rem;
+}
+
+/* Thumbnail placeholder */
+.project-placeholder.thumbnail-placeholder {
+  position: absolute;
+  min-height: auto;
+}
+
+.project-placeholder.thumbnail-placeholder .placeholder-initials {
+  font-size: 1.5rem;
+}
+
+/* Responsive placeholder */
+@media (max-width: 768px) {
+  .placeholder-initials {
+    font-size: 3rem;
+  }
+  
+  .project-placeholder.modal-placeholder .placeholder-initials {
+    font-size: 4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .placeholder-initials {
+    font-size: 2.5rem;
+  }
+  
+  .project-placeholder.modal-placeholder .placeholder-initials {
+    font-size: 3rem;
+  }
+}
+
+/* Project Detail Modal */
+.project-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.project-modal {
+  background: #fff;
+  width: 100%;
+  max-width: 1100px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.project-modal .modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.project-modal .modal-close-btn:hover {
+  background: #333;
+}
+
+.modal-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Modal Image Section */
+.modal-image-section {
+  position: relative;
+  background: #1a1a1a;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-main-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-height: 70vh;
+}
+
+.modal-fallback-placeholder {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  background: #1a1a1a;
+}
+
+.modal-image-section .modal-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1a1a1a;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.modal-image-section .modal-nav-btn:hover {
+  background: #fff;
+}
+
+.modal-image-section .modal-nav-btn.prev {
+  left: 1rem;
+}
+
+.modal-image-section .modal-nav-btn.next {
+  right: 1rem;
+}
+
+.modal-image-counter {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+}
+
+.modal-thumbnails {
+  position: absolute;
+  bottom: 3.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  max-width: 90%;
+  overflow-x: auto;
+  padding: 0.5rem;
+}
+
+.modal-thumbnail {
+  width: 60px;
+  height: 60px;
+  flex-shrink: 0;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  border: 2px solid transparent;
+  overflow: hidden;
+  background: #333;
+}
+
+.modal-thumbnail:hover,
+.modal-thumbnail.active {
+  opacity: 1;
+  border-color: #fff;
+}
+
+.modal-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Modal Details Section */
+.modal-details-section {
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  overflow-y: auto;
+  max-height: 90vh;
+}
+
+.modal-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-header .status-badge {
+  align-self: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.modal-title {
+  font-size: 1.75rem;
+  font-weight: 300;
+  color: #1a1a1a;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.modal-type {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.modal-period {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #888;
+  font-size: 0.875rem;
+}
+
+.modal-period svg {
+  font-size: 0.8rem;
+}
+
+.modal-description p {
+  color: #444;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.modal-benefits h4,
+.modal-technologies h4 {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #1a1a1a;
+  margin-bottom: 0.75rem;
+}
+
+.modal-benefits ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal-benefits li {
+  position: relative;
+  padding-left: 1.25rem;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.modal-benefits li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  width: 6px;
+  height: 6px;
+  background: #1a1a1a;
+}
+
+.modal-technologies .tech-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.modal-technologies .tech-tag {
+  background: #f5f5f5;
+  color: #1a1a1a;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border: 1px solid #e5e5e5;
+}
+
+.modal-links {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e5e5;
+}
+
+.modal-links .project-links {
+  justify-content: flex-start;
+}
+
+/* Modal Responsive */
+@media (max-width: 900px) {
+  .modal-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-image-section {
+    min-height: 300px;
+    max-height: 50vh;
+  }
+  
+  .modal-details-section {
+    max-height: none;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .project-modal-overlay {
+    padding: 0;
+  }
+  
+  .project-modal {
+    max-height: 100vh;
+    height: 100vh;
+  }
+  
+  .modal-image-section {
+    min-height: 250px;
+  }
+  
+  .modal-title {
+    font-size: 1.4rem;
+  }
+  
+  .modal-details-section {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+  
+  .modal-thumbnails {
+    display: none;
+  }
+}
+
+/* Clickable placeholder hover effect */
+.project-images-collage {
+  cursor: pointer;
+}
+
+.project-images-collage:hover .project-placeholder {
+  background: #2a2a2a;
+}
+
+.card-image {
+  cursor: pointer;
+}
+
+.card-image:hover .project-placeholder {
+  background: #2a2a2a;
+}
+
+.project-placeholder.show {
+  cursor: pointer;
+}
+
+.project-placeholder.show:hover {
+  background: #2a2a2a;
+}

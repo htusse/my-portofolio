@@ -296,44 +296,6 @@ const Skills = () => {
           </p>
         </div>
 
-        {/* Top Skills Overview */}
-        <div className="top-skills">
-          <h3>Top Skills</h3>
-          <div className="top-skills-grid">
-            {topSkills.map((skill, index) => (
-              <div key={index} className="top-skill-item">
-                <div
-                  className="skill-icon"
-                  style={{ color: getSkillColor(skill.level) }}
-                >
-                  {skill.icon}
-                </div>
-                <div className="skill-info">
-                  <h4>{skill.name}</h4>
-                  <div className="skill-meta">
-                    <span className="skill-level">
-                      {getSkillLevel(skill.level)}
-                    </span>
-                    <span className="skill-years">{skill.years}+ years</span>
-                    {skill.certified && (
-                      <span className="certified">Certified</span>
-                    )}
-                  </div>
-                </div>
-                <div className="skill-progress">
-                  <div
-                    className="progress-bar"
-                    style={{
-                      width: `${skill.level}%`,
-                      backgroundColor: getSkillColor(skill.level),
-                    }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* Skills Categories */}
         <div className="skills-section">
           <div className="category-tabs">
@@ -423,59 +385,6 @@ const Skills = () => {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Skills Summary */}
-        <div className="skills-summary">
-          <div className="summary-grid">
-            <div className="summary-item">
-              <div className="summary-icon expert">
-                <FaChartBar />
-              </div>
-              <div className="summary-content">
-                <h4>Expert Level</h4>
-                <p>
-                  {allSkills.filter((s) => s.level >= 90).length} Technologies
-                </p>
-              </div>
-            </div>
-
-            <div className="summary-item">
-              <div className="summary-icon advanced">
-                <FaCode />
-              </div>
-              <div className="summary-content">
-                <h4>Advanced Level</h4>
-                <p>
-                  {
-                    allSkills.filter((s) => s.level >= 80 && s.level < 90)
-                      .length
-                  }{" "}
-                  Technologies
-                </p>
-              </div>
-            </div>
-
-            <div className="summary-item">
-              <div className="summary-icon years">
-                <FaTools />
-              </div>
-              <div className="summary-content">
-                <h4>5+ Years</h4>
-                <p>Professional Experience</p>
-              </div>
-            </div>
-
-            <div className="summary-item">
-              <div className="summary-icon certified">
-                <FaAws />
-              </div>
-              <div className="summary-content">
-                <h4>AWS Certified</h4>
-                <p>Cloud Practitioner</p>
-              </div>
             </div>
           </div>
         </div>

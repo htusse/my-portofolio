@@ -102,12 +102,6 @@ function App() {
         <Projects />
         <Skills />
       </main>
-
-      <footer className="main-footer">
-        <div className="container">
-          <p style={{color: '#fff'}}>&copy; 2025 Herve Tusse. Crafted with passion and precision.</p>
-        </div>
-      </footer>
     </div>
   );
 }

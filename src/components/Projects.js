@@ -4,24 +4,73 @@ import {
   FaExternalLinkAlt,
   FaCalendarAlt,
   FaCode,
-  FaTags,
   FaChevronLeft,
   FaChevronRight,
   FaApple,
   FaGooglePlay,
   FaGlobe,
+  FaTimes,
 } from "react-icons/fa";
 import "./Projects.css";
+
+// Helper function to get initials from project title
+const getInitials = (title) => {
+  if (!title) return "HT";
+  const words = title.split(" ").filter(word => word.length > 0);
+  if (words.length === 1) return words[0].substring(0, 2).toUpperCase();
+  return (words[0][0] + words[1][0]).toUpperCase();
+};
+
+// Placeholder component for projects without images
+const ProjectPlaceholder = ({ title, className = "", onClick }) => {
+  const initials = getInitials(title);
+  return (
+    <div className={`project-placeholder ${className}`} onClick={onClick} style={{ cursor: onClick ? 'pointer' : 'default' }}>
+      <span className="placeholder-initials">{initials}</span>
+    </div>
+  );
+};
 
 const Projects = () => {
   const [currentProject, setCurrentProject] = useState(0);
   const [filter, setFilter] = useState("all");
-  const [cardImageIndices, setCardImageIndices] = useState({});
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
-  const [modalImages, setModalImages] = useState([]);
-  const [currentModalImage, setCurrentModalImage] = useState(0);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const projects = [
+    {
+      title: "Secret Sale - E-commerce Platform",
+      period: "August 2025 - September 2025",
+      category: "web",
+      type: "Full-Stack E-commerce Solution",
+      status: "Completed",
+      description:
+        "Enterprise-grade multi-service e-commerce platform built on MedusaJS v2, featuring a customer storefront, point-of-sale system, campaign management, and comprehensive order fulfillment with multiple payment integrations.",
+      benefits: [
+        "Complete e-commerce solution with MedusaJS v2 backend and Next.js 15 storefront",
+        "Point-of-Sale admin interface with order management and label printing",
+        "Multiple payment gateway integrations (Stripe, PayFast, Manual payments)",
+        "Advanced product search with Meilisearch integration",
+        "Bulk product management with CSV import/export",
+        "Partial fulfillment support with item-level tracking",
+      ],
+      technologies: [
+        "Next.js 15",
+        "MedusaJS v2",
+        "TypeScript",
+        "PostgreSQL",
+        "Redis",
+        "Meilisearch",
+        "Docker",
+        "TailwindCSS",
+        "Shadcn UI",
+      ],
+      links: {
+        website: "https://secretsale.co.za/",
+      },
+      images: ["/secret-sale.png"],
+      featured: true,
+    },
     {
       title: "Jaride - Multi-Service Platform",
       period: "January 2024 - March 2024",
@@ -140,31 +189,6 @@ const Projects = () => {
       },
     },
     {
-      title: "WordPress Wishlist Generator",
-      period: "February 2025 - March 2025",
-      category: "web",
-      type: "WordPress Plugin",
-      status: "Completed",
-      description:
-        "Custom WordPress plugin enabling users to create, preview, and share personalized Cricut wishlists with multi-language support and social media integration.",
-      benefits: [
-        "Increased brand engagement through social media sharing capabilities",
-        "Enhanced product discovery via QR codes linking to product pages",
-        "Improved campaign flexibility with modular system supporting seasonal campaigns",
-        "Optimized mobile experience with responsive design",
-      ],
-      technologies: [
-        "WordPress",
-        "PHP",
-        "JavaScript",
-        "Social Media APIs",
-        "QR Codes",
-        "Multi-language",
-      ],
-      images: ["/80.png"],
-      featured: false,
-    },
-    {
       title: "Rectron Summit App",
       period: "August 2024 - September 2024",
       category: "mobile",
@@ -205,21 +229,26 @@ const Projects = () => {
       title: "Comic Con Africa",
       period: "April 2023 - September 2023",
       category: "mobile",
-      type: "Event Management App",
+      type: "Event & Gamification App",
       status: "Completed",
       description:
-        "Event management app with real-time updates, dynamic floor plans, notifications, social media integration, and ticketing via Howler API.",
+        "Feature-rich event management app for Africa's largest pop culture convention, featuring gamification with quests and treasure hunts, real-time programme schedules, exhibitor discovery, QR code scanning, leaderboards, and integrated ticketing.",
       benefits: [
-        "Enhanced user engagement with interactive features and real-time updates",
-        "Streamlined event management with dynamic scheduling and exhibitor listings",
-        "Simplified administrative tasks and enabled fast, secure ticketing",
+        "Gamification system with quests, treasure hunts, and competitive leaderboards",
+        "Real-time programme scheduling with detailed event information and notifications",
+        "Interactive exhibitor directory with detailed profiles and floorplan navigation",
+        "QR code scanning for check-ins, treasure hunts, and exclusive content unlocks",
+        "Integrated ticketing via Howler API with secure scan-to-enter functionality",
+        "Special zones support including KidsCon, StreamerCon, and Otaku content",
       ],
       technologies: [
+        "Expo",
         "React Native",
         "Firebase",
-        "React",
-        "Node.js",
+        "Strapi CMS",
+        "AWS Cognito",
         "Howler API",
+        "QR Scanning",
       ],
       images: [
         "/40.png",
@@ -272,25 +301,29 @@ const Projects = () => {
     },
     {
       title: "Cricut Ambassador App",
-      period: "October 2024 - Present",
+      period: "October 2024 - March 2025",
       category: "mobile",
-      type: "Mobile Application",
+      type: "Ambassador Management Platform",
       status: "Completed",
       description:
-        "Comprehensive mobile application for Cricut's ambassador program, facilitating onboarding, training, rewards, and engagement for product ambassadors.",
+        "Comprehensive multi-country ambassador management platform for Cricut, featuring gamification, training modules, demo scheduling, digital wallet with banking integration, and real-time leaderboards across South Africa, Middle East, Israel, and Turkey.",
       benefits: [
-        "Streamlined ambassador onboarding with automated verification and profile setup",
-        "Enhanced ambassador skills through integrated training modules and assessments",
-        "Optimized store demonstration scheduling with GPS verification",
-        "Increased engagement through point-based reward system and tiered ambassador levels",
+        "Multi-country support with region-specific wallet and payout systems for 4 markets",
+        "Comprehensive gamification system with challenges, leaderboards, and tiered rewards",
+        "Integrated training platform with video modules, quizzes, and certification tracking",
+        "Demo scheduling with GPS verification and buddy system for event coordination",
+        "Digital wallet with banking integration for commission payouts and product purchases",
+        "Real-time push notifications and OTA updates via Expo for seamless user experience",
       ],
       technologies: [
         "React Native",
-        "Node.js",
+        "Expo",
+        "Strapi CMS",
         "Firebase",
-        "AWS",
-        "Geolocation",
+        "Sentry",
+        "Multi-region APIs",
         "Push Notifications",
+        "Geolocation",
       ],
       images: [
         "/70.png", // Cover image
@@ -303,6 +336,35 @@ const Projects = () => {
         "/77.png",
         "/78.png",
       ],
+      featured: false,
+    },
+    {
+      title: "Cricut Wishlist Plugin",
+      period: "February 2025 - March 2025",
+      category: "wordpress",
+      type: "WordPress Plugin",
+      status: "Completed",
+      description:
+        "Feature-rich WordPress plugin for creating and sharing personalized Cricut product wishlists with live preview, QR code generation, social media integration, and comprehensive admin analytics dashboard.",
+      benefits: [
+        "Interactive wishlist creator with real-time live preview using HTML5 Canvas",
+        "Social media sharing with optimized Open Graph meta tags for Facebook and Twitter",
+        "QR code generation for easy mobile sharing and product discovery",
+        "Comprehensive admin dashboard with share tracking and wishlist analytics",
+        "Multiple customizable messages and background images per campaign",
+        "Responsive mobile-first design with custom branded typography",
+      ],
+      technologies: [
+        "WordPress",
+        "PHP",
+        "jQuery",
+        "HTML5 Canvas",
+        "AJAX",
+        "QRCode.js",
+        "Open Graph API",
+        "MySQL",
+      ],
+      images: ["/80.png"],
       featured: false,
     },
     {
@@ -343,27 +405,27 @@ const Projects = () => {
       title: "Vaya X",
       period: "January 2025 - Present",
       category: "mobile",
-      type: "Rideshare Mobile Application",
+      type: "Multi-Service Transportation Platform",
       status: "Completed",
       description:
-        "Comprehensive rideshare application specifically designed for the South African market, featuring localized payment methods, multi-language support, and safety features tailored to local needs.",
+        "Enterprise-grade multi-service transportation platform built with Yarn workspaces monorepo architecture, supporting taxi booking, food delivery, accommodation, and cargo services across 20+ African countries with integrated payment systems and real-time tracking.",
       benefits: [
-        "Localized payment integration including EFT, SnapScan, Zapper, and mobile banking",
-        "Multi-language support for English, Afrikaans, Zulu, and Xhosa",
-        "Enhanced safety features with trip sharing and emergency contacts",
-        "Offline mode for areas with limited connectivity and cash payment options",
-        "South African compliance with POPIA and local transportation regulations",
-        "Optimized for local traffic patterns and township area coverage",
+        "Multi-country and multi-currency support for 20+ African regions including Tanzania e-ticketing compliance",
+        "Comprehensive payment integration with 15+ gateways including Stripe, PayPal, PayStack, and Flutterwave",
+        "Monorepo architecture with shared business logic across mobile app, web dashboard, and cloud functions",
+        "Real-time booking system with driver matching, trip tracking, and automated notifications",
+        "Fleet management dashboard for admin and fleet operators with detailed analytics",
+        "Wallet system with locked balance support for referral bonuses and promotional credits",
       ],
       technologies: [
+        "Expo",
         "React Native",
-        "Node.js",
+        "React",
         "Firebase",
-        "Payment Gateways",
-        "Geolocation",
-        "Offline Storage",
-        "Multi-language",
-        "Push Notifications",
+        "Cloud Functions",
+        "Redux Toolkit",
+        "Multi-payment APIs",
+        "Google Maps",
       ],
       images: [
         "/20.png", // Cover image
@@ -385,12 +447,206 @@ const Projects = () => {
         website: "https://vayax-78d77.web.app/",
       },
     },
+    {
+      title: "AmissihArt - Poster Builder",
+      period: "August 2025 - December 2025",
+      category: "web",
+      type: "SaaS Design Platform",
+      status: "Completed",
+      description:
+        "Professional-grade poster and design creation platform with AI-powered template generation, advanced design tools, and seamless collaboration features for creating stunning posters, flyers, and social media graphics.",
+      benefits: [
+        "AI-powered smart template generation from text prompts using OpenAI",
+        "Professional drag-and-drop editor with Fabric.js canvas",
+        "Advanced data visualization with 5 chart types (Bar, Line, Pie, Donut, Area)",
+        "500+ professional templates across business, marketing, education, and events",
+        "Multi-format export (PNG, JPG, PDF, SVG) with quality options up to 2x resolution",
+        "Tiered subscription system with Free, Pro, and Business plans",
+      ],
+      technologies: [
+        "React",
+        "Firebase",
+        "Material-UI",
+        "Fabric.js",
+        "OpenAI API",
+        "Google Fonts API",
+        "Cloud Functions",
+      ],
+      images: ["/amissih-art.png"],
+      featured: false,
+      links: {
+        github: "https://github.com/htusse/poster-builder-ui",
+      },
+    },
+    // {
+    //   title: "EventApp - Event Management Platform",
+    //   period: "December 2025 - Present",
+    //   category: "web",
+    //   type: "React Event Management PWA",
+    //   status: "In Progress",
+    //   description:
+    //     "Comprehensive event management platform enabling users to create, manage, and sell tickets for events with integrated PayFast payment processing, QR-coded tickets, and real-time order management.",
+    //   benefits: [
+    //     "Complete event creation and management with draft saving at every step",
+    //     "PayFast payment integration with secure webhook handling and signature verification",
+    //     "Automated QR-coded ticket generation upon successful payment",
+    //     "4-day free trial system for new users",
+    //     "Order management with automatic cleanup of abandoned orders",
+    //     "Mobile-first responsive design with PWA capabilities",
+    //   ],
+    //   technologies: [
+    //     "React 19",
+    //     "TypeScript",
+    //     "Vite",
+    //     "Tailwind CSS 4",
+    //     "Firebase",
+    //     "PayFast API",
+    //     "Cloud Functions",
+    //   ],
+    //   images: ["/eventapp.png"],
+    //   featured: false,
+    // },
+    // {
+    //   title: "TruFit Lifestyle - Health & Wellness PWA",
+    //   period: "2025 - Present",
+    //   category: "web",
+    //   type: "Progressive Web Application",
+    //   status: "In Progress",
+    //   description:
+    //     "Mobile-first Progressive Web Application for health and wellness management featuring client onboarding, referral tracking, subscription management, e-commerce health shop, and community features.",
+    //   benefits: [
+    //     "Client database supporting 5,000+ users with unique WhatsApp referral links",
+    //     "Three-tier subscription system (Free, Monthly/Quarterly, One-Time Programs)",
+    //     "Integrated e-commerce health shop with member discounts",
+    //     "Live webinar platform with Zoom/Google Meet integration",
+    //     "Real-time community chat with group rooms and private messaging",
+    //     "PayFast payment integration for South African market",
+    //   ],
+    //   technologies: [
+    //     "React 19",
+    //     "TypeScript",
+    //     "Vite",
+    //     "Tailwind CSS 4",
+    //     "Firebase",
+    //     "Zustand",
+    //     "TanStack Query",
+    //     "PayFast",
+    //   ],
+    //   images: ["/trufit.png"],
+    //   featured: false,
+    // },
+    {
+      title: "WhatsApp Business Bot",
+      period: "December 2025 - January 2026",
+      category: "web",
+      type: "Node.js Bot Application",
+      status: "Completed",
+      description:
+        "Automated WhatsApp bot using Meta's WhatsApp Business Platform API for business communication, featuring webhook integration, automated responses, and interactive messaging capabilities.",
+      benefits: [
+        "Automated customer response system with customizable commands",
+        "Webhook integration for real-time message processing",
+        "Interactive button and media message support",
+        "Easy deployment with ngrok for local development",
+        "Scalable architecture for business communication needs",
+        "Comprehensive command system (greeting, help, info, contact)",
+      ],
+      technologies: [
+        "Node.js",
+        "Express",
+        "Meta WhatsApp API",
+        "Webhooks",
+        "ngrok",
+      ],
+      images: ["/whatsappbot.png"],
+      featured: false,
+      links: {
+        github: "https://github.com/htusse/whatsappbot",
+      },
+    },
+    {
+      title: "Strapi Excel Exporter Plugin",
+      period: "2024",
+      category: "strapi",
+      type: "Strapi CMS Plugin",
+      status: "Completed",
+      description:
+        "Custom Strapi plugin enabling administrators to export collection data to Excel spreadsheets with configurable columns, filters, and formatting options for streamlined data analysis and reporting.",
+      benefits: [
+        "One-click Excel export from any Strapi collection with custom column selection",
+        "Support for filtered data exports based on current view settings",
+        "Configurable column formatting and data transformation",
+        "Seamless integration with Strapi admin panel UI",
+        "Bulk data export for reporting and analytics workflows",
+      ],
+      technologies: [
+        "Strapi",
+        "Node.js",
+        "xlsx",
+        "React",
+        "Strapi Plugin API",
+      ],
+      images: [],
+      featured: false,
+    },
+    {
+      title: "Ambassador Overview Dashboard Plugin",
+      period: "2024",
+      category: "strapi",
+      type: "Strapi CMS Plugin",
+      status: "Completed",
+      description:
+        "Custom Strapi admin plugin providing a comprehensive dashboard for ambassador program management with real-time analytics, performance metrics, and activity tracking across multiple regions.",
+      benefits: [
+        "Real-time ambassador performance metrics and KPI visualization",
+        "Multi-region overview with country-specific filtering",
+        "Activity tracking for demos, training completions, and engagements",
+        "Leaderboard integration with point-based ranking system",
+        "Quick access to ambassador profiles and management actions",
+      ],
+      technologies: [
+        "Strapi",
+        "Node.js",
+        "React",
+        "Chart.js",
+        "Strapi Plugin API",
+      ],
+      images: [],
+      featured: false,
+    },
+    {
+      title: "Custom Email Plugin",
+      period: "2024",
+      category: "strapi",
+      type: "Strapi CMS Plugin",
+      status: "Completed",
+      description:
+        "Custom Strapi plugin extending email functionality with template management, bulk email capabilities, and SendGrid integration for ambassador communications and automated notifications.",
+      benefits: [
+        "Custom email template management with dynamic variable support",
+        "Bulk email sending to filtered user groups (ambassadors, trainees, trainers)",
+        "SendGrid integration with delivery tracking and analytics",
+        "Scheduled email campaigns with cron-based automation",
+        "Role-based email targeting for targeted communications",
+      ],
+      technologies: [
+        "Strapi",
+        "Node.js",
+        "SendGrid API",
+        "React",
+        "Strapi Plugin API",
+      ],
+      images: [],
+      featured: false,
+    },
   ];
 
   const categories = [
     { key: "all", label: "All Projects" },
     { key: "mobile", label: "Mobile Apps" },
-    { key: "web", label: "Web Applications" }
+    { key: "web", label: "Web Applications" },
+    { key: "wordpress", label: "WordPress Plugins" },
+    { key: "strapi", label: "Strapi Plugins" }
   ];
 
   const filteredProjects =
@@ -401,64 +657,6 @@ const Projects = () => {
         );
 
   const featuredProjects = projects.filter((project) => project.featured);
-
-  // Keyboard navigation for modal
-  useEffect(() => {
-    const handleKeyPress = (e) => {
-      if (!isImageModalOpen) return;
-
-      switch (e.key) {
-        case 'Escape':
-          setIsImageModalOpen(false);
-          setModalImages([]);
-          setCurrentModalImage(0);
-          document.body.style.overflow = 'auto';
-          break;
-        case 'ArrowLeft':
-          setCurrentModalImage((prev) => 
-            prev === 0 ? modalImages.length - 1 : prev - 1
-          );
-          break;
-        case 'ArrowRight':
-          setCurrentModalImage((prev) => 
-            prev === modalImages.length - 1 ? 0 : prev + 1
-          );
-          break;
-        default:
-          break;
-      }
-    };
-
-    if (isImageModalOpen) {
-      document.addEventListener('keydown', handleKeyPress);
-      return () => document.removeEventListener('keydown', handleKeyPress);
-    }
-  }, [isImageModalOpen, modalImages.length]);
-
-  // Helper functions for card image navigation
-  const getCardImageIndex = (projectIndex) => {
-    return cardImageIndices[projectIndex] || 0;
-  };
-
-  const setCardImageIndex = (projectIndex, imageIndex) => {
-    setCardImageIndices((prev) => ({
-      ...prev,
-      [projectIndex]: imageIndex,
-    }));
-  };
-
-  const navigateCardImage = (projectIndex, direction, totalImages) => {
-    const currentIndex = getCardImageIndex(projectIndex);
-    let newIndex;
-
-    if (direction === "next") {
-      newIndex = currentIndex === totalImages - 1 ? 0 : currentIndex + 1;
-    } else {
-      newIndex = currentIndex === 0 ? totalImages - 1 : currentIndex - 1;
-    }
-
-    setCardImageIndex(projectIndex, newIndex);
-  };
 
   // Navigation functions for featured projects carousel
   const navigateToProject = (direction) => {
@@ -473,32 +671,53 @@ const Projects = () => {
     }
   };
 
-  // Image modal functions
-  const openImageModal = (images) => {
-    setModalImages(images);
-    setCurrentModalImage(0);
-    setIsImageModalOpen(true);
-    document.body.style.overflow = 'hidden'; // Prevent background scroll
+  // Project detail modal functions
+  const openProjectModal = (project) => {
+    setSelectedProject(project);
+    setCurrentImageIndex(0);
+    document.body.style.overflow = 'hidden';
   };
 
-  const closeImageModal = () => {
-    setIsImageModalOpen(false);
-    setModalImages([]);
-    setCurrentModalImage(0);
-    document.body.style.overflow = 'auto'; // Restore scroll
+  const closeProjectModal = () => {
+    setSelectedProject(null);
+    setCurrentImageIndex(0);
+    document.body.style.overflow = 'auto';
   };
 
-  const navigateModalImage = (direction) => {
+  const navigateImage = (direction) => {
+    if (!selectedProject?.images?.length) return;
+    const totalImages = selectedProject.images.length;
     if (direction === "next") {
-      setCurrentModalImage((prev) => 
-        prev === modalImages.length - 1 ? 0 : prev + 1
-      );
+      setCurrentImageIndex((prev) => (prev + 1) % totalImages);
     } else {
-      setCurrentModalImage((prev) => 
-        prev === 0 ? modalImages.length - 1 : prev - 1
-      );
+      setCurrentImageIndex((prev) => (prev - 1 + totalImages) % totalImages);
     }
   };
+
+  // Keyboard navigation for modal
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      if (!selectedProject) return;
+      switch (e.key) {
+        case 'Escape':
+          closeProjectModal();
+          break;
+        case 'ArrowLeft':
+          navigateImage('prev');
+          break;
+        case 'ArrowRight':
+          navigateImage('next');
+          break;
+        default:
+          break;
+      }
+    };
+
+    if (selectedProject) {
+      document.addEventListener('keydown', handleKeyPress);
+      return () => document.removeEventListener('keydown', handleKeyPress);
+    }
+  }, [selectedProject]);
 
   const renderProjectLinks = (links) => {
     if (!links) return null;
@@ -577,7 +796,7 @@ const Projects = () => {
 
           <div className="carousel-container">
             <div className="featured-project">
-              <div className="project-images-collage">
+              <div className="project-images-collage" onClick={() => openProjectModal(featuredProjects[currentProject])}>
                 <div className="project-overlay">
                   <div className="project-status">
                     <span
@@ -592,47 +811,13 @@ const Projects = () => {
                   </div>
                 </div>
 
-                <div className={`images-grid ${
-                  featuredProjects[currentProject]?.images.length === 1 ? 'grid-single' :
-                  featuredProjects[currentProject]?.images.length === 2 ? 'grid-double' :
-                  featuredProjects[currentProject]?.images.length === 3 ? 'grid-triple' :
-                  featuredProjects[currentProject]?.images.length === 4 ? 'grid-quad' :
-                  featuredProjects[currentProject]?.images.length === 5 ? 'grid-five' :
-                  featuredProjects[currentProject]?.images.length === 6 ? 'grid-six' :
-                  'grid-multiple'
-                }`}>
-                  {featuredProjects[currentProject]?.images.slice(0, 6).map((image, index) => {
-                    const totalImages = featuredProjects[currentProject]?.images.length;
-                    const isLastItem = index === 5 && totalImages > 6;
-                    
-                    return (
-                                            <div 
-                            key={index}
-                        className={`image-item item-${index + 1}`}
-                        onClick={() => {
-                          setCurrentModalImage(index);
-                          openImageModal(featuredProjects[currentProject]?.images);
-                        }}
-                      >
-                        <img
-                          src={image}
-                          alt={`${featuredProjects[currentProject]?.title} - Image ${index + 1}`}
-                          onError={(e) => {
-                            e.target.src =
-                              "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ci8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
-                          }}
-                        />
-                                                {isLastItem && (
-                          <div 
-                            className="overlay-count"
-                            onClick={() => openImageModal(featuredProjects[currentProject]?.images)}
-                          >
-                            +{totalImages - 6}
-                          </div>
-                      )}
-                    </div>
-                    );
-                  })}
+                <div className="images-grid grid-single">
+                  <div className="image-item item-1">
+                    <ProjectPlaceholder 
+                      title={featuredProjects[currentProject]?.title} 
+                      className="show" 
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -719,19 +904,10 @@ const Projects = () => {
         {/* All Projects Grid */}
         <div className="projects-grid">
           {filteredProjects.map((project, index) => {
-            const currentCardImageIndex = getCardImageIndex(index);
             return (
               <div key={index} className="project-card">
-                <div className="card-image">
-                  <img
-                    style={{objectFit: 'cover'}}
-                    src={project.images[currentCardImageIndex]}
-                    alt={project.title}
-                    onError={(e) => {
-                      e.target.src =
-                        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
-                    }}
-                  />
+                <div className="card-image" onClick={() => openProjectModal(project)} style={{ cursor: 'pointer' }}>
+                  <ProjectPlaceholder title={project.title} className="show" />
                   <div className="card-overlay">
                     <span
                       className={`status-badge ${project.status
@@ -741,49 +917,6 @@ const Projects = () => {
                       {project.status}
                     </span>
                   </div>
-
-                  {/* Card Image Navigation */}
-                  {project.images.length > 1 && (
-                    <>
-                      <button
-                        className="card-image-nav-btn prev"
-                        onClick={() =>
-                          navigateCardImage(
-                            index,
-                            "prev",
-                            project.images.length
-                          )
-                        }
-                      >
-                        <FaChevronLeft />
-                      </button>
-                      <button
-                        className="card-image-nav-btn next"
-                        onClick={() =>
-                          navigateCardImage(
-                            index,
-                            "next",
-                            project.images.length
-                          )
-                        }
-                      >
-                        <FaChevronRight />
-                      </button>
-
-                      {/* Card Image Indicators */}
-                      <div className="card-image-indicators">
-                        {project.images.map((_, imgIndex) => (
-                          <button
-                            key={imgIndex}
-                            className={`card-image-indicator ${
-                              currentCardImageIndex === imgIndex ? "active" : ""
-                            }`}
-                            onClick={() => setCardImageIndex(index, imgIndex)}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
                 </div>
 
                 <div className="card-content">
@@ -823,67 +956,122 @@ const Projects = () => {
           })}
         </div>
 
-        {/* Image Modal */}
-        {isImageModalOpen && (
-          <div className="image-modal-overlay" onClick={closeImageModal}>
-            <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
-              <button className="modal-close-btn" onClick={closeImageModal}>
-                <span style={{lineHeight: '1', fontSize: '2rem', fontWeight: 'bold'}}>×</span>
+        {/* Project Detail Modal */}
+        {selectedProject && (
+          <div className="project-modal-overlay" onClick={closeProjectModal}>
+            <div className="project-modal" onClick={(e) => e.stopPropagation()}>
+              <button className="modal-close-btn" onClick={closeProjectModal} aria-label="Close modal">
+                <FaTimes />
               </button>
-              
-              <div className="modal-image-container">
-                <img
-                  src={modalImages[currentModalImage]}
-                  alt={`${featuredProjects[currentProject]?.title} - Image ${currentModalImage + 1}`}
-                  onError={(e) => {
-                    e.target.src =
-                      "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
-                  }}
-                />
-                
-                {modalImages.length > 1 && (
-                  <>
-                    <button
-                      className="modal-nav-btn prev"
-                      onClick={() => navigateModalImage("prev")}
-                    >
-                      <FaChevronLeft />
-                    </button>
-                    <button
-                      className="modal-nav-btn next"
-                      onClick={() => navigateModalImage("next")}
-                    >
-                      <FaChevronRight />
-                    </button>
-                  </>
-                )}
-              </div>
 
-              <div className="modal-image-info">
-                <h3>{featuredProjects[currentProject]?.title}</h3>
-                <p>{currentModalImage + 1} of {modalImages.length}</p>
-              </div>
-
-              {modalImages.length > 1 && (
-                <div className="modal-image-thumbnails">
-                  {modalImages.map((image, index) => (
-                    <div
-                      key={index}
-                      className={`modal-thumbnail ${currentModalImage === index ? 'active' : ''}`}
-                      onClick={() => setCurrentModalImage(index)}
-                    >
+              <div className="modal-content">
+                {/* Image/Placeholder Section */}
+                <div className="modal-image-section">
+                  {selectedProject.images && selectedProject.images.length > 0 ? (
+                    <>
                       <img
-                        src={image}
-                        alt={`Thumbnail ${index + 1}`}
+                        src={selectedProject.images[currentImageIndex]}
+                        alt={`${selectedProject.title} - Image ${currentImageIndex + 1}`}
+                        className="modal-main-image"
                         onError={(e) => {
-                          e.target.src =
-                            "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDQwMCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjUwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0xNzUgMTAwSDIyNVYxNTBIMTc1VjEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPHN2Zz4K";
+                          e.target.style.display = 'none';
+                          e.target.nextElementSibling.style.display = 'flex';
                         }}
                       />
-                    </div>
-                  ))}
+                      <ProjectPlaceholder title={selectedProject.title} className="modal-fallback-placeholder" />
+                      
+                      {selectedProject.images.length > 1 && (
+                        <>
+                          <button 
+                            className="modal-nav-btn prev" 
+                            onClick={() => navigateImage('prev')}
+                            aria-label="Previous image"
+                          >
+                            <FaChevronLeft />
+                          </button>
+                          <button 
+                            className="modal-nav-btn next" 
+                            onClick={() => navigateImage('next')}
+                            aria-label="Next image"
+                          >
+                            <FaChevronRight />
+                          </button>
+                          <div className="modal-image-counter">
+                            {currentImageIndex + 1} / {selectedProject.images.length}
+                          </div>
+                        </>
+                      )}
+
+                      {/* Thumbnail Strip */}
+                      {selectedProject.images.length > 1 && (
+                        <div className="modal-thumbnails">
+                          {selectedProject.images.map((img, idx) => (
+                            <div 
+                              key={idx}
+                              className={`modal-thumbnail ${currentImageIndex === idx ? 'active' : ''}`}
+                              onClick={() => setCurrentImageIndex(idx)}
+                            >
+                              <img 
+                                src={img} 
+                                alt={`Thumbnail ${idx + 1}`}
+                                onError={(e) => {
+                                  e.target.style.display = 'none';
+                                }}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    <ProjectPlaceholder title={selectedProject.title} className="show modal-placeholder" />
+                  )}
                 </div>
-              )}
+
+                {/* Details Section */}
+                <div className="modal-details-section">
+                  <div className="modal-header">
+                    <span className={`status-badge ${selectedProject.status.toLowerCase().replace(" ", "-")}`}>
+                      {selectedProject.status}
+                    </span>
+                    <h2 className="modal-title">{selectedProject.title}</h2>
+                    <p className="modal-type">{selectedProject.type}</p>
+                    <p className="modal-period">
+                      <FaCalendarAlt /> {selectedProject.period}
+                    </p>
+                  </div>
+
+                  <div className="modal-description">
+                    <p>{selectedProject.description}</p>
+                  </div>
+
+                  {selectedProject.benefits && selectedProject.benefits.length > 0 && (
+                    <div className="modal-benefits">
+                      <h4>Key Benefits</h4>
+                      <ul>
+                        {selectedProject.benefits.map((benefit, idx) => (
+                          <li key={idx}>{benefit}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <div className="modal-technologies">
+                    <h4>Technologies</h4>
+                    <div className="tech-tags">
+                      {selectedProject.technologies.map((tech, idx) => (
+                        <span key={idx} className="tech-tag">{tech}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {selectedProject.links && (
+                    <div className="modal-links">
+                      {renderProjectLinks(selectedProject.links)}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         )}

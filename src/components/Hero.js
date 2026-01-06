@@ -86,38 +86,6 @@ const Hero = () => {
               I transform ideas into powerful, user-centric applications that make a difference.
             </p>
 
-            <div className="hero-stats">
-              <div className="stat-item">
-                <div className="stat-icon">
-                  <FaCode />
-                </div>
-                <div className="stat-content">
-                  <h3>15+</h3>
-                  <p>Projects Delivered</p>
-                </div>
-              </div>
-              
-              <div className="stat-item">
-                <div className="stat-icon">
-                  <FaMobile />
-                </div>
-                <div className="stat-content">
-                  <h3>5+</h3>
-                  <p>Years Experience</p>
-                </div>
-              </div>
-              
-              <div className="stat-item">
-                <div className="stat-icon">
-                  <FaCloud />
-                </div>
-                <div className="stat-content">
-                  <h3>30+</h3>
-                  <p>Technologies</p>
-                </div>
-              </div>
-            </div>
-
             <div className="hero-actions">
               <button className="btn btn-primary pulse-effect" onClick={scrollToProjects}>
                 View My Work
